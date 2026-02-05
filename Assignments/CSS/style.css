@@ -1,0 +1,24 @@
+body
+{
+    background-color: antiquewhite;
+}
+h1
+{
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    color: blue;
+    text-align: center;
+}
+.box
+{
+    background-color: antiquewhite;
+    color: rgb(2, 75, 2);
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-size: medium;
+}
+
+#mybox
+{
+    height: 500px;
+    width: 500px;
+    background-color: aqua;
+}

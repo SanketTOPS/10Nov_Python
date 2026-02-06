@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JS-1</title>
+     <style>
+        body{
+            background-color: aliceblue;
+        }
+        h1{
+            color: blue;
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+            text-align: center;
+            border-style: dashed;
+            border-radius: 15px;
+        }
+    </style>
+</head>
+<body>
+    <h1>JS-1</h1>
+    <hr>
+
+    <input type="text" id="name" placeholder="Name">
+    <input type="text" id="city" placeholder="City">
+    <button onclick="btnClick()">Submit</button>
+
+    <script>
+        function btnClick()
+        {
+            let a=document.getElementById("name").value;
+            let b=document.getElementById("city").value;
+            console.log("Name:",a)
+            console.log("City:",b)
+        }
+        
+    </script>
+</body>
+</html>

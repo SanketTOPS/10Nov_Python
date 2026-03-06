@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100">
+
+    <!-- Navbar -->
+    <nav class="bg-blue-600 text-white p-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-xl font-bold">My Website</h1>
+
+            <div class="space-x-4">
+                <a href="#" class="hover:underline">Home</a>
+                <a href="#" class="hover:underline">Profile</a>
+                <a href="#" class="hover:underline">Settings</a>
+                <a href="login.html" class="bg-red-500 px-3 py-1 rounded hover:bg-red-600">Logout</a>
+            </div>
+
+        </div>
+    </nav>
+
+
+    <!-- Welcome Section -->
+    <div class="container mx-auto mt-10 px-6">
+
+        <div class="bg-white p-6 rounded-lg shadow mb-6">
+            <h2 class="text-2xl font-bold text-gray-700">Welcome Back 👋</h2>
+            <p class="text-gray-500 mt-2">
+                You have successfully logged in to your dashboard.
+            </p>
+        </div>
+
+
+        <!-- Dashboard Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+            <div class="bg-white p-6 rounded-lg shadow hover:shadow-lg transition">
+                <h3 class="text-lg font-semibold text-gray-700">Profile</h3>
+                <p class="text-gray-500 mt-2">Manage your personal details.</p>
+                <button class="mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+                    View Profile
+                </button>
+            </div>
+
+            <div class="bg-white p-6 rounded-lg shadow hover:shadow-lg transition">
+                <h3 class="text-lg font-semibold text-gray-700">Settings</h3>
+                <p class="text-gray-500 mt-2">Update your account settings.</p>
+                <button class="mt-4 bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
+                    Open Settings
+                </button>
+            </div>
+
+            <div class="bg-white p-6 rounded-lg shadow hover:shadow-lg transition">
+                <h3 class="text-lg font-semibold text-gray-700">Activity</h3>
+                <p class="text-gray-500 mt-2">Check your recent activity.</p>
+                <button class="mt-4 bg-purple-500 text-white px-4 py-2 rounded hover:bg-purple-600">
+                    View Activity
+                </button>
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>

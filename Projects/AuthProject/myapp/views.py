@@ -1,9 +1,12 @@
 from django.shortcuts import render,redirect
 from .forms import *
+from django.contrib.auth import logout
 
 # Create your views here.
 def home(request):
-    return render(request,'home.html')
+    user=request.session.get("user")
+    name=request.session.get("name")
+    return render(request,'home.html',{'user':user,'name':name})
 
 def login(request):
     if request.method=='POST':
@@ -11,8 +14,12 @@ def login(request):
         pa=request.POST['password']
         
         user=userSignup.objects.filter(email=em,password=pa)
+        uid=userSignup.objects.get(email=em)
+        print(uid.fullname)
         if user:
             print("Login Successfully!")
+            request.session["user"]=em #generate session
+            request.session['name']=uid.fullname
             return redirect('home')
         else:
             print("Error!")    
@@ -28,3 +35,8 @@ def signup(request):
         else:
             print(form.errors)
     return render(request,'signup.html')
+
+def userlogout(request):
+    logout(request)
+    return redirect('/')
+    

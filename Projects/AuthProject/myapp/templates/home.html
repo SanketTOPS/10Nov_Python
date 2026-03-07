@@ -19,18 +19,45 @@
                 <a href="#" class="hover:underline">Home</a>
                 <a href="#" class="hover:underline">Profile</a>
                 <a href="#" class="hover:underline">Settings</a>
-                <a href="login.html" class="bg-red-500 px-3 py-1 rounded hover:bg-red-600">Logout</a>
+
+                {% if user is none %}
+                <a href="/" class="bg-blue-500 px-3 py-1 rounded hover:bg-yellow-600">Login</a>
+                {% else %}
+                <a href="/userlogout" class="bg-red-500 px-3 py-1 rounded hover:bg-red-600">Logout</a>
+                {% endif %}
+
             </div>
 
         </div>
     </nav>
 
 
+    {% if user is none %}
+    <!-- Warning Card -->
+    <div class="max-w-xl mx-auto bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 rounded shadow">
+
+        <div class="flex items-center">
+
+            <!-- Icon -->
+            <div class="text-2xl mr-3">
+                ⚠️
+            </div>
+
+            <div>
+                <h3 class="font-bold">Warning</h3>
+                <p>Your session will expire soon. Please save your work to avoid data loss.</p>
+            </div>
+
+        </div>
+
+    </div>
+
+    {% else %}
     <!-- Welcome Section -->
     <div class="container mx-auto mt-10 px-6">
 
         <div class="bg-white p-6 rounded-lg shadow mb-6">
-            <h2 class="text-2xl font-bold text-gray-700">Welcome Back 👋</h2>
+            <h2 class="text-2xl font-bold text-gray-700">Welcome, {{name}} 👋</h2>
             <p class="text-gray-500 mt-2">
                 You have successfully logged in to your dashboard.
             </p>
@@ -67,6 +94,7 @@
         </div>
 
     </div>
+    {% endif %}
 
 </body>
 

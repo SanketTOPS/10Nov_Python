@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %}Verify OTP{% endblock %}
+
+{% block content %}
+<div class="auth-header">
+    <h1>Verify Email</h1>
+    <p>We've sent a 6-digit code to your email</p>
+</div>
+
+<form method="POST">
+    {% csrf_token %}
+    <div class="form-group">
+        <label for="otp">Enter OTP</label>
+        <input type="text" id="otp" name="otp" class="form-input" required placeholder="123456" maxlength="6" pattern="\d{6}">
+    </div>
+    <button type="submit" class="btn-primary">Verify OTP</button>
+</form>
+
+<div class="auth-footer">
+    <p>Didn't receive code? <a href="#">Resend</a></p>
+</div>
+{% endblock %}

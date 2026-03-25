@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Note Status Update</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            background: #ffffff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2563eb, #4f46e5);
+            padding: 30px;
+            text-align: center;
+            color: white;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 28px;
+            letter-spacing: 1px;
+        }
+
+        .content {
+            padding: 40px;
+            color: #374151;
+            line-height: 1.6;
+        }
+
+        .status-card {
+            background: #f8fafc;
+            padding: 25px;
+            border-radius: 10px;
+            border: 1px solid #e2e8f0;
+            margin: 25px 0;
+        }
+
+        .note-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 10px;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 6px 16px;
+            border-radius: 50px;
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 13px;
+        }
+
+        .approved {
+            background-color: #dcfce7;
+            color: #15803d;
+        }
+
+        .rejected {
+            background-color: #fee2e2;
+            color: #b91c1c;
+        }
+
+        .footer {
+            background: #f9fafb;
+            padding: 25px;
+            text-align: center;
+            font-size: 13px;
+            color: #6b7280;
+            border-top: 1px solid #f1f5f9;
+        }
+
+        .btn {
+            display: inline-block;
+            background: #2563eb;
+            color: white !important;
+            padding: 12px 28px;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+
+        @media only screen and (max-width: 600px) {
+            .container {
+                margin: 0;
+                border-radius: 0;
+            }
+            .content {
+                padding: 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>NotesApp</h1>
+        </div>
+        <div class="content">
+            <h2 style="margin-top: 0; color: #111827;">Hello {{ username }},</h2>
+            <p>We have an update regarding your note submission. Our administration team has reviewed your content.</p>
+            
+            <div class="status-card">
+                <div class="note-title">Title: {{ title }}</div>
+                <div style="margin-bottom: 5px; color: #64748b;">Status:</div>
+                <span class="status-badge {{ status_class }}">
+                    {{ status }}
+                </span>
+            </div>
+
+            {% if status == 'Approved' %}
+            <p>Great news! Your note has been <strong>approved</strong> and is now available on the platform for others to view.</p>
+            <div style="text-align: center; margin-top: 30px;">
+                <a href="#" class="btn">View Your Notes</a>
+            </div>
+            {% else %}
+            <p>We regret to inform you that your note has been <strong>rejected</strong>. This could be due to community guidelines or formatting issues.</p>
+            <p>Feel free to revise your content and submit it again for review.</p>
+            {% endif %}
+
+            <p style="margin-top: 30px;">Thank you for being part of our community!</p>
+
+            <div style="margin-top: 40px; border-top: 1px solid #e5e7eb; padding-top: 20px;">
+                <p style="font-size: 14px; color: #9ca3af; margin: 0;">Warm regards,<br><strong>The NotesApp Team</strong></p>
+            </div>
+        </div>
+        <div class="footer">
+            &copy; 2026 NotesApp | Simple, Secure, Organized.<br>
+            <span style="font-size: 11px;">You are receiving this email because you submitted a note to our platform.</span>
+        </div>
+    </div>
+</body>
+</html>

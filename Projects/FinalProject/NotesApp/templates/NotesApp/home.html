@@ -1,0 +1,137 @@
+{% extends 'NotesApp/base.html' %}
+
+{% block title %}Dashboard - NotesApp{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto">
+    <div class="bg-white rounded-2xl shadow-xl overflow-hidden">
+        <div class="bg-gradient-to-r from-blue-600 to-indigo-700 p-10 text-white text-center">
+            <h1 class="text-4xl font-extrabold mb-4">Welcome to NotesApp</h1>
+            <p class="text-blue-100 text-lg">Your central hub for capturing ideas and organized thoughts.</p>
+        </div>
+
+        <div class="p-10">
+            {% if user.is_authenticated %}
+            <div
+                class="bg-blue-50 border border-blue-100 rounded-xl p-6 flex flex-col md:flex-row items-center justify-between mb-8">
+                <div class="mb-4 md:mb-0">
+                    <h2 class="text-2xl font-bold text-gray-900">Hello, {{ user.username }}!</h2>
+                    <p class="text-gray-600">You are securely logged in to your account.</p>
+                </div>
+                <div class="flex space-x-3">
+                    <a href="{% url 'submit_note' %}"
+                        class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-semibold transition duration-200">Submit
+                        New Note</a>
+                </div>
+            </div>
+
+            <div class="space-y-6">
+                <div class="flex items-center justify-between border-b pb-4">
+                    <h3 class="text-xl font-bold text-gray-800">Your Recent Submissions</h3>
+                    <span class="text-sm text-gray-500 font-medium">{{ notes|length }} Notes Total</span>
+                </div>
+
+                {% if notes %}
+                <div class="overflow-x-auto rounded-xl border border-gray-100 shadow-sm">
+                    <table class="w-full text-left bg-white">
+                        <thead class="bg-gray-50 uppercase text-xs font-bold text-gray-500">
+                            <tr>
+                                <th class="px-6 py-4">Title</th>
+                                <th class="px-6 py-4">Submitted On</th>
+                                <th class="px-6 py-4 text-center">Status</th>
+                                <th class="px-6 py-4">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-100">
+                            {% for note in notes %}
+                            <tr class="hover:bg-gray-50 transition-colors">
+                                <td class="px-6 py-4 font-semibold text-gray-900">{{ note.title }}</td>
+                                <td class="px-6 py-4 text-gray-500 text-sm">{{ note.created_at|date:"M d, Y" }}</td>
+                                <td class="px-6 py-4 text-center">
+                                    <span class="px-3 py-1 rounded-full text-xs font-bold 
+                                        {% if note.status == 'Approved' %}bg-green-100 text-green-700
+                                        {% elif note.status == 'Rejected' %}bg-red-100 text-red-700
+                                        {% else %}bg-amber-100 text-amber-700{% endif %}">
+                                        {{ note.status }}
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <a href="{{ note.file.url }}"
+                                        class="text-blue-600 hover:text-blue-800 font-medium text-sm flex items-center space-x-1"
+                                        target="_blank">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4">
+                                            </path>
+                                        </svg>
+                                        <span>Download</span>
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div class="text-center py-12 bg-gray-50 rounded-2xl border-2 border-dashed border-gray-200">
+                    <svg class="w-12 h-12 text-gray-300 mx-auto mb-4" fill="none" stroke="currentColor"
+                        viewBox="0 0 24 24">
+                        <path
+                            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+                        </path>
+                    </svg>
+                    <p class="text-gray-500">No notes found. Start by submitting your first note!</p>
+                </div>
+                {% endif %}
+            </div>
+            {% else %}
+            <div class="text-center py-10">
+                <h2 class="text-2xl font-bold text-gray-900 mb-4">Get Started Today</h2>
+                <p class="text-gray-600 mb-8 max-w-md mx-auto">Create an account to start organizing your life with
+                    beautiful, responsive, and secure notes.</p>
+                <div class="flex justify-center space-x-4">
+                    <a href="{% url 'register' %}"
+                        class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-xl font-bold transition duration-300 shadow-lg transform hover:-translate-y-1">Create
+                        Account</a>
+                    <a href="{% url 'login' %}"
+                        class="bg-gray-100 hover:bg-gray-200 text-gray-800 px-8 py-3 rounded-xl font-bold transition duration-300">Login</a>
+                </div>
+            </div>
+            {% endif %}
+
+            <div class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="text-center p-6 bg-gray-50 rounded-2xl border border-gray-100">
+                    <div class="bg-blue-100 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4">
+                            </path>
+                        </svg>
+                    </div>
+                    <h3 class="font-bold text-gray-900 mb-2">Quick Add</h3>
+                    <p class="text-sm text-gray-600">Instantly capture any thought that comes to mind.</p>
+                </div>
+                <div class="text-center p-6 bg-gray-50 rounded-2xl border border-gray-100">
+                    <div class="bg-green-100 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="font-bold text-gray-900 mb-2">Stay Organized</h3>
+                    <p class="text-sm text-gray-600">Categories and tags help you find what you need.</p>
+                </div>
+                <div class="text-center p-6 bg-gray-50 rounded-2xl border border-gray-100">
+                    <div class="bg-purple-100 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z">
+                            </path>
+                        </svg>
+                    </div>
+                    <h3 class="font-bold text-gray-900 mb-2">Secure</h3>
+                    <p class="text-sm text-gray-600">Your notes are stored safely with encryption.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

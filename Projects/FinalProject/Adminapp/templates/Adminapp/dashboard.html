@@ -1,0 +1,213 @@
+{% extends 'NotesApp/base.html' %}
+
+{% block title %}Admin Dashboard - NotesApp{% endblock %}
+
+{% block content %}
+<div class="max-w-6xl mx-auto">
+    <div class="flex items-center justify-between mb-8">
+        <div>
+            <h1 class="text-3xl font-extrabold text-gray-900 tracking-tight">Hello, {{ user.username }}</h1>
+            <p class="text-gray-600">Overview of all submitted notes and administrative review panel.</p>
+        </div>
+        <div class="bg-blue-600 text-white px-4 py-2 rounded-lg font-bold shadow-md">
+            Admin Mode
+        </div>
+    </div>
+
+    <!-- Stats Section -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+        <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+            <p class="text-sm font-medium text-gray-500 uppercase tracking-wider">Total Submissions</p>
+            <h3 class="text-3xl font-bold text-gray-900 mt-1">{{ total_count }}</h3>
+        </div>
+        <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+            <p class="text-sm font-medium text-amber-500 uppercase tracking-wider">Pending Review</p>
+            <h3 class="text-3xl font-bold text-gray-900 mt-1">{{ pending_count }}</h3>
+        </div>
+        <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+            <p class="text-sm font-medium text-green-500 uppercase tracking-wider">Approved Notes</p>
+            <h3 class="text-3xl font-bold text-gray-900 mt-1">{{ approved_count }}</h3>
+        </div>
+    </div>
+
+    <div class="bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100">
+        <div class="p-6 border-b border-gray-100 bg-gray-50 flex justify-between items-center">
+            <h3 class="text-lg font-bold text-gray-800">All Submitted Notes</h3>
+        </div>
+
+        <div class="overflow-x-auto">
+            <table class="w-full text-left">
+                <thead class="bg-gray-50 uppercase text-xs font-bold text-gray-500">
+                    <tr>
+                        <th class="px-6 py-4">User</th>
+                        <th class="px-6 py-4">Note Details</th>
+                        <th class="px-6 py-4 text-center">Status</th>
+                        <th class="px-6 py-4 text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-100 bg-white">
+                    {% for note in notes %}
+                    <tr class="hover:bg-blue-50/30 transition-colors">
+                        <td class="px-6 py-4">
+                            <div class="flex items-center">
+                                <div
+                                    class="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold">
+                                    {{ note.user.username|first|upper }}
+                                </div>
+                                <div class="ml-4">
+                                    <p class="text-sm font-bold text-gray-900">{{ note.user.username }}</p>
+                                    <p class="text-xs text-gray-500">{{ note.user.email }}</p>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4">
+                            <p class="text-sm font-bold text-gray-950">{{ note.title }}</p>
+                            <p class="text-xs text-gray-500 truncate max-w-xs">{{ note.description }}</p>
+                            <a href="{{ note.file.url }}"
+                                class="text-xs text-blue-600 font-medium hover:underline mt-1 inline-block"
+                                target="_blank">View Document</a>
+                        </td>
+                        <td class="px-6 py-4 text-center">
+                            <span class="px-3 py-1 rounded-full text-xs font-bold 
+                                {% if note.status == 'Approved' %}bg-green-100 text-green-700
+                                {% elif note.status == 'Rejected' %}bg-red-100 text-red-700
+                                {% else %}bg-amber-100 text-amber-700{% endif %}">
+                                {{ note.status }}
+                            </span>
+                        </td>
+                        <td class="px-6 py-4 text-center">
+                            <div class="flex items-center justify-center space-x-2">
+                                {% if note.status != 'Approved' %}
+                                <a href="{% url 'approve_note' note.id %}"
+                                    class="bg-green-500 hover:bg-green-600 text-white p-2 rounded-lg transition duration-200 shadow-sm"
+                                    title="Approve">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                </a>
+                                {% endif %}
+                                {% if note.status != 'Rejected' %}
+                                <a href="{% url 'reject_note' note.id %}"
+                                    class="bg-red-500 hover:bg-red-600 text-white p-2 rounded-lg transition duration-200 shadow-sm"
+                                    title="Reject">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M6 18L18 6M6 6l12 12"></path>
+                                    </svg>
+                                </a>
+                                {% endif %}
+                            </div>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="4" class="px-6 py-12 text-center text-gray-500 italic">No notes have been submitted
+                            yet.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Users Section -->
+    <div class="bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100 mt-10">
+        <div class="p-6 border-b border-gray-100 bg-gray-50 flex justify-between items-center">
+            <h3 class="text-lg font-bold text-gray-800">Registered Users</h3>
+        </div>
+
+        <div class="overflow-x-auto">
+            <table class="w-full text-left">
+                <thead class="bg-gray-50 uppercase text-xs font-bold text-gray-500">
+                    <tr>
+                        <th class="px-6 py-4">User</th>
+                        <th class="px-6 py-4">Joined On</th>
+                        <th class="px-6 py-4 text-center">Verified</th>
+                        <th class="px-6 py-4 text-center">Status</th>
+                        <th class="px-6 py-4 text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-100 bg-white">
+                    {% for u in users %}
+                    <tr class="hover:bg-blue-50/30 transition-colors">
+                        <td class="px-6 py-4">
+                            <div class="flex items-center">
+                                <div
+                                    class="h-10 w-10 rounded-full {% if u.is_active %}bg-blue-100 text-blue-600{% else %}bg-gray-200 text-gray-600{% endif %} flex items-center justify-center font-bold">
+                                    {{ u.username|first|upper }}
+                                </div>
+                                <div class="ml-4">
+                                    <p class="text-sm font-bold text-gray-900">{{ u.username }}</p>
+                                    <p class="text-xs text-gray-500">{{ u.email }}</p>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 text-gray-500 text-sm">
+                            {{ u.date_joined|date:"M d, Y" }}
+                        </td>
+                        <td class="px-6 py-4 text-center">
+                            {% if u.profile.is_verified %}
+                            <span class="text-green-500">
+                                <svg class="w-5 h-5 mx-auto" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                                </svg>
+                            </span>
+                            {% else %}
+                            <span class="text-red-400">
+                                <svg class="w-5 h-5 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                </svg>
+                            </span>
+                            {% endif %}
+                        </td>
+                        <td class="px-6 py-4 text-center">
+                            <span class="px-3 py-1 rounded-full text-xs font-bold 
+                                {% if u.is_active %}bg-green-100 text-green-700
+                                {% else %}bg-red-100 text-red-700{% endif %}">
+                                {% if u.is_active %}Active{% else %}Blocked{% endif %}
+                            </span>
+                        </td>
+                        <td class="px-6 py-4 text-center">
+                            <div class="flex items-center justify-center space-x-2">
+                                {% if u.is_active %}
+                                <a href="{% url 'block_user' u.id %}"
+                                    class="bg-amber-500 hover:bg-amber-600 text-white p-2 rounded-lg transition duration-200 shadow-sm"
+                                    title="Block User" onclick="return confirm('Are you sure you want to block this user?');">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"></path>
+                                    </svg>
+                                </a>
+                                {% else %}
+                                <a href="{% url 'unblock_user' u.id %}"
+                                    class="bg-green-500 hover:bg-green-600 text-white p-2 rounded-lg transition duration-200 shadow-sm"
+                                    title="Unblock User">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                </a>
+                                {% endif %}
+                                <a href="{% url 'delete_user' u.id %}"
+                                    class="bg-red-600 hover:bg-red-700 text-white p-2 rounded-lg transition duration-200 shadow-sm"
+                                    title="Delete User" onclick="return confirm('WARNING: Are you sure you want to PERMANENTLY delete this user? This cannot be undone.');">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                    </svg>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="4" class="px-6 py-12 text-center text-gray-500 italic">No registered users found.
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

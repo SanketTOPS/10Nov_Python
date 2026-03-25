@@ -1,0 +1,41 @@
+{% extends 'NotesApp/base.html' %}
+
+{% block title %}Submit New Note - NotesApp{% endblock %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto">
+    <div class="bg-white p-8 rounded-2xl shadow-xl transform transition-all hover:shadow-2xl">
+        <div class="text-center mb-10">
+            <h2 class="text-3xl font-extrabold text-gray-900 tracking-tight">Submit New Note</h2>
+            <p class="mt-2 text-sm text-gray-600">Your note will be reviewed by our administrators before appearing in
+                your dashboard.</p>
+        </div>
+
+        <form method="post" enctype="multipart/form-data" class="space-y-6">
+            {% csrf_token %}
+            {% for field in form %}
+            <div class="relative">
+                <label class="block text-sm font-semibold text-gray-700 mb-1">{{ field.label }}</label>
+                {{ field }}
+                {% if field.errors %}
+                {% for error in field.errors %}
+                <p class="mt-1 text-xs text-red-600 font-medium">{{ error }}</p>
+                {% endfor %}
+                {% endif %}
+            </div>
+            {% endfor %}
+
+            <div class="flex items-center space-x-4 pt-4">
+                <button type="submit"
+                    class="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-xl transition duration-300 shadow-lg transform hover:-translate-y-1 active:scale-95 text-center">
+                    Submit Note
+                </button>
+                <a href="{% url 'home' %}"
+                    class="flex-1 border-2 border-gray-200 text-gray-600 font-bold py-3 px-6 rounded-xl text-center hover:bg-gray-50 transition duration-200">
+                    Cancel
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

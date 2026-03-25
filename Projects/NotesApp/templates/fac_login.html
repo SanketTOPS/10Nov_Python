@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block title %}Faculty Login{% endblock %}
+
+{% block extra_css %}
+<style>
+    :root {
+        --primary: #ec4899; /* Pink/Rose for Faculty */
+        --primary-hover: #db2777;
+        --bg-gradient: linear-gradient(135deg, #f43f5e 0%, #881337 100%);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="auth-header">
+    <h1>Faculty Login</h1>
+    <p>Manager your resources and students</p>
+</div>
+
+<form method="POST">
+    {% csrf_token %}
+    <div class="form-group">
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username" class="form-input" required placeholder="Faculty username">
+    </div>
+    <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" class="form-input" required placeholder="Password">
+    </div>
+    <button type="submit" class="btn-primary">Login</button>
+</form>
+
+<div class="auth-footer">
+    <p>New faculty? <a href="{% url 'fac-signup' %}">Register here</a></p>
+    <p style="margin-top: 10px;"><a href="/" style="color: var(--text-muted); font-size: 0.75rem;">Back to Home</a></p>
+</div>
+{% endblock %}

@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %}Submit Note{% endblock %}
+
+{% block content %}
+<div class="auth-header">
+    <h1>Submit Note</h1>
+    <p>Upload your study materials for approval</p>
+</div>
+
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="form-group">
+        <label for="title">Title</label>
+        <input type="text" id="title" name="title" class="form-input" required placeholder="Enter note title">
+    </div>
+    <div class="form-group">
+        <label for="description">Description</label>
+        <textarea id="description" name="description" class="form-input" required placeholder="Brief description of the note" style="min-height: 100px; resize: none;"></textarea>
+    </div>
+    <div class="form-group">
+        <label for="note_file">Upload File (PDF/Doc)</label>
+        <input type="file" id="note_file" name="note_file" class="form-input" required>
+    </div>
+    <button type="submit" class="btn-primary">Submit for Approval</button>
+</form>
+
+<div class="auth-footer">
+    <a href="{% url 'stud-dashboard' %}">Back to Dashboard</a>
+</div>
+{% endblock %}

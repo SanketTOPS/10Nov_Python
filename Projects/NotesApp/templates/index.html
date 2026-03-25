@@ -1,0 +1,107 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NotesApp | Home</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <style>
+        .home-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            width: 100%;
+            max-width: 800px;
+        }
+        .portal-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 3rem 2rem;
+            text-align: center;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+            text-decoration: none;
+            color: white;
+        }
+        .portal-card:hover {
+            transform: scale(1.05);
+            background: rgba(255, 255, 255, 0.15);
+        }
+        .portal-card.faculty {
+            --primary: #ec4899;
+        }
+        .icon-circle {
+            width: 80px;
+            height: 80px;
+            background: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            font-size: 2rem;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+        }
+        h2 { font-size: 1.5rem; margin-bottom: 0.5rem; }
+        p { color: var(--text-muted); font-size: 0.875rem; }
+        .main-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+        }
+        .main-title {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 3rem;
+            text-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            background: linear-gradient(to right, #fff, #cbd5e1);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        @media (max-width: 640px) {
+            .home-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        {% if messages %}
+        <ul class="messages" style="width: 100%; max-width: 400px; list-style: none;">
+            {% for message in messages %}
+            <li class="message {{ message.tags }}">{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+
+        <h1 class="main-title">NotesApp Portal</h1>
+        
+        {% if user.is_authenticated %}
+        <p style="margin-bottom: 2rem;">Logged in as: <strong>{{ user.username }}</strong> 
+           ({{ user.profile.role|title }}) | 
+           <a href="{% url 'logout' %}" style="color: var(--error); text-decoration: none;">Logout</a>
+        </p>
+        {% endif %}
+
+        <div class="home-grid">
+            <a href="{% url 'stud-login' %}" class="portal-card">
+                <div class="icon-circle">🎓</div>
+                <h2>Student Portal</h2>
+                <p>Learn, share and excel together</p>
+            </a>
+            <a href="{% url 'fac-login' %}" class="portal-card faculty">
+                <div class="icon-circle">👨‍🏫</div>
+                <h2>Faculty Portal</h2>
+                <p>Manage courses and guide students</p>
+            </a>
+        </div>
+    </div>
+</body>
+</html>

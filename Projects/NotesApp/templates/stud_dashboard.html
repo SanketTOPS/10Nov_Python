@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block container_class %}wide-container{% endblock %}
+
+{% block title %}Student Dashboard{% endblock %}
+
+{% block extra_css %}
+<style>
+    .dashboard-container { max-width: 1000px; margin: 0 auto; padding: 20px; }
+    .note-card { background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 15px; padding: 1.5rem; margin-bottom: 1rem; }
+    .status-pending { color: #fbbf24; }
+    .status-approved { color: #10b981; }
+    .status-rejected { color: #ef4444; }
+    .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+    <div class="top-bar">
+        <h1>My Notes</h1>
+        <a href="{% url 'submit-note' %}" class="btn-primary" style="width: auto; padding: 0.5rem 1.5rem;">Submit New Note</a>
+    </div>
+
+    {% if notes %}
+        {% for note in notes %}
+        <div class="note-card">
+            <div style="display: flex; justify-content: space-between;">
+                <h3>{{ note.title }}</h3>
+                <span class="status-{{ note.status }}">{{ note.status|title }}</span>
+            </div>
+            <p style="color: var(--text-muted); margin: 0.5rem 0;">{{ note.description }}</p>
+            <div style="font-size: 0.8rem; display: flex; justify-content: space-between;">
+                <a href="{{ note.note_file.url }}" target="_blank" style="color: var(--primary);">View File</a>
+                <span style="color: var(--text-muted);">{{ note.created_at|date:"M d, Y" }}</span>
+            </div>
+        </div>
+        {% endfor %}
+    {% else %}
+        <p style="text-align: center; color: var(--text-muted);">No notes submitted yet.</p>
+    {% endif %}
+    
+    <div style="text-align: center; margin-top: 20px;">
+        <a href="{% url 'home' %}" style="color: var(--text-muted);">Back to Home</a>
+    </div>
+</div>
+{% endblock %}

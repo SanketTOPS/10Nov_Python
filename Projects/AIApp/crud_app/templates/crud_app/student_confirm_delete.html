@@ -1,0 +1,19 @@
+{% extends 'crud_app/base.html' %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-5">
+        <div class="card p-4 text-center">
+            <h2 class="fw-bold text-danger mb-4">Delete Student?</h2>
+            <p class="text-muted mb-4">Are you sure you want to delete <strong>{{ student.first_name }} {{ student.last_name }}</strong>? This action cannot be undone.</p>
+            <form method="post">
+                {% csrf_token %}
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-danger py-2 fw-bold">Yes, Delete Permanently</button>
+                    <a href="{% url 'student_list' %}" class="btn btn-outline-secondary py-2">No, Keep Record</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock content %}

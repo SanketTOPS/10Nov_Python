@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}NotesApp{% endblock %}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 flex flex-col min-h-screen">
+    <nav class="bg-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <a href="{% url 'home' %}" class="text-2xl font-bold text-blue-600 tracking-tight">NotesApp</a>
+                </div>
+                <div class="flex items-center space-x-4">
+                    {% if user.is_authenticated %}
+                    {% if user.is_staff %}
+                    <a href="{% url 'admin_dashboard' %}"
+                        class="text-blue-600 hover:text-blue-800 px-3 py-2 text-sm font-bold border-r pr-4">Admin
+                        Dashboard</a>
+                    {% endif %}
+                    <span class="text-gray-700 text-sm">Hello, <span class="font-semibold text-blue-600">{{ user.username }}</span></span>
+                    <a href="{% url 'logout' %}"
+                        class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition duration-200 shadow-md transform hover:-translate-y-0.5">Logout</a>
+                    {% else %}
+                    <a href="{% url 'login' %}"
+                        class="text-gray-600 hover:text-blue-600 px-3 py-2 text-sm font-medium">Login</a>
+                    <a href="{% url 'register' %}"
+                        class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition duration-200 shadow-md transform hover:-translate-y-0.5">Register</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="flex-grow container mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        {% if messages %}
+        <div class="max-w-md mx-auto mb-6">
+            {% for message in messages %}
+            <div
+                class="p-4 rounded-lg shadow-sm border-l-4 {% if message.tags == 'success' %}bg-green-50 text-green-700 border-green-500{% elif message.tags == 'error' %}bg-red-50 text-red-700 border-red-500{% else %}bg-blue-50 text-blue-700 border-blue-500{% endif %} flex items-center mb-2 animate-fade-in-down">
+                <span class="text-sm font-medium">{{ message }}</span>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="bg-white border-t py-8">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <p class="text-gray-500 text-sm">&copy; 2026 NotesApp - Securely manage your thoughts.</p>
+        </div>
+    </footer>
+
+    <style>
+        @keyframes fade-in-down {
+            0% {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-fade-in-down {
+            animation: fade-in-down 0.5s ease-out;
+        }
+    </style>
+</body>
+
+</html>

@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+
+{% block container_class %}wide-container{% endblock %}
+
+{% block title %}Faculty Dashboard{% endblock %}
+
+{% block extra_css %}
+<style>
+    :root {
+        --primary: #ec4899;
+        --primary-hover: #db2777;
+    }
+    .dashboard-container { width: 100vw; max-width: 1200px; margin: 0 auto; padding: 40px; }
+    .auth-container { max-width: none; width: 100%; }
+    .notes-table { width: 100%; border-collapse: collapse; margin-top: 2rem; background: rgba(15, 23, 42, 0.4); border-radius: 15px; overflow: hidden; }
+    .notes-table th, .notes-table td { padding: 1.25rem; text-align: left; border-bottom: 1px solid var(--glass-border); }
+    .notes-table th { background: rgba(255, 255, 255, 0.05); color: var(--text-muted); font-weight: 600; font-size: 0.875rem; text-transform: uppercase; }
+    .btn-action { padding: 0.5rem 1rem; border-radius: 8px; font-size: 0.875rem; font-weight: 600; text-decoration: none; display: inline-block; transition: all 0.2s; }
+    .btn-approve { background: #10b98122; color: #10b981; border: 1px solid #10b98144; }
+    .btn-approve:hover { background: #10b981; color: white; }
+    .btn-reject { background: #ef444422; color: #ef4444; border: 1px solid #ef444444; margin-left: 10px; }
+    .btn-reject:hover { background: #ef4444; color: white; }
+    .status-badge { padding: 4px 12px; border-radius: 999px; font-size: 0.75rem; font-weight: 600; }
+    .status-pending { background: #fbbf2422; color: #fbbf24; }
+    .status-approved { background: #10b98122; color: #10b981; }
+    .status-rejected { background: #ef444422; color: #ef4444; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+        <div>
+            <h1 style="font-size: 2rem;">Faculty Dashboard</h1>
+            <p style="color: var(--text-muted);">Review and manage student note submissions</p>
+        </div>
+        <a href="{% url 'logout' %}" style="color: var(--text-muted);">Logout</a>
+    </div>
+
+    <div class="auth-header" style="text-align: left; margin-top: 3rem;">
+        <h2 style="font-size: 1.5rem;">Pending Approvals ({{ pending_notes.count }})</h2>
+    </div>
+
+    <table class="notes-table">
+        <thead>
+            <tr>
+                <th>Student</th>
+                <th>Title</th>
+                <th>Submission Date</th>
+                <th>File</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for note in pending_notes %}
+            <tr>
+                <td>{{ note.student.username }}</td>
+                <td>{{ note.title }}</td>
+                <td>{{ note.created_at|date:"M d, Y" }}</td>
+                <td><a href="{{ note.note_file.url }}" target="_blank" style="color: var(--primary);">Download</a></td>
+                <td>
+                    <a href="{% url 'update-status' note.id 'approved' %}" class="btn-action btn-approve">Approve</a>
+                    <a href="{% url 'update-status' note.id 'rejected' %}" class="btn-action btn-reject">Reject</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5" style="text-align: center; color: var(--text-muted); padding: 3rem;">No pending notes to review.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="auth-header" style="text-align: left; margin-top: 4rem;">
+        <h2 style="font-size: 1.5rem;">All History</h2>
+    </div>
+
+    <table class="notes-table">
+        <thead>
+            <tr>
+                <th>Student</th>
+                <th>Title</th>
+                <th>Status</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for note in all_notes %}
+            <tr>
+                <td>{{ note.student.username }}</td>
+                <td>{{ note.title }}</td>
+                <td><span class="status-badge status-{{ note.status }}">{{ note.status|title }}</span></td>
+                <td>{{ note.created_at|date:"M d, Y" }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    
+    <div style="text-align: center; margin-top: 40px;">
+        <a href="{% url 'home' %}" style="color: var(--text-muted);">Back to Home</a>
+    </div>
+</div>
+{% endblock %}

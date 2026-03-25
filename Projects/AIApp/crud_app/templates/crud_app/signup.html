@@ -1,0 +1,50 @@
+{% extends 'crud_app/base.html' %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-5">
+        <div class="card p-4 shadow-lg border-0">
+            <h2 class="fw-bold mb-4 text-center">Create Account</h2>
+            <form method="post">
+                {% csrf_token %}
+                {% for field in form %}
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">{{ field.label }}</label>
+                    {{ field }}
+                    {% if field.help_text %}
+                    <small class="form-text text-muted d-block">{{ field.help_text|safe }}</small>
+                    {% endif %}
+                    {% if field.errors %}
+                    <div class="text-danger small mt-1">
+                        {{ field.errors|striptags }}
+                    </div>
+                    {% endif %}
+                </div>
+                {% endfor %}
+                <div class="d-grid gap-2 mt-4">
+                    <button type="submit" class="btn btn-primary py-2 fw-bold">Create Account</button>
+                    <a href="{% url 'login' %}" class="btn btn-outline-secondary">Already have an account? Login</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<style>
+    input {
+        display: block;
+        width: 100%;
+        padding: 0.375rem 0.75rem;
+        font-size: 1rem;
+        font-weight: 400;
+        line-height: 1.5;
+        color: #212529;
+        background-color: #fff;
+        background-clip: padding-box;
+        border: 1px solid #ced4da;
+        appearance: none;
+        border-radius: 0.375rem;
+        transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+    }
+</style>
+{% endblock content %}

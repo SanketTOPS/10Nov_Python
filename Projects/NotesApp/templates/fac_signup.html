@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %}Faculty Registration{% endblock %}
+
+{% block extra_css %}
+<style>
+    :root {
+        --primary: #ec4899;
+        --primary-hover: #db2777;
+        --bg-gradient: linear-gradient(135deg, #f43f5e 0%, #881337 100%);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="auth-header">
+    <h1>Faculty Signup</h1>
+    <p>Register as an instructor</p>
+</div>
+
+<form method="POST">
+    {% csrf_token %}
+    <div class="form-group">
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username" class="form-input" required placeholder="Choose a username">
+    </div>
+    <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" class="form-input" required placeholder="Enter your email">
+    </div>
+    <div class="form-group">
+        <label for="department">Department</label>
+        <input type="text" id="department" name="department" class="form-input" required placeholder="e.g. Computer Science">
+    </div>
+    <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" class="form-input" required placeholder="Create a password">
+    </div>
+    <button type="submit" class="btn-primary">Sign Up</button>
+</form>
+
+<div class="auth-footer">
+    <p>Already registered? <a href="{% url 'fac-login' %}">Login</a></p>
+</div>
+{% endblock %}

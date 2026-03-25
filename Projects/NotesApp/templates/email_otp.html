@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f6;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: #ffffff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+        .header {
+            background-color: #6366f1;
+            padding: 30px;
+            text-align: center;
+            color: #ffffff;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+            letter-spacing: 1px;
+        }
+        .content {
+            padding: 40px;
+            text-align: center;
+            color: #334155;
+        }
+        .content p {
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+        .otp-box {
+            background-color: #f8fafc;
+            border: 2px dashed #6366f1;
+            padding: 20px;
+            font-size: 32px;
+            font-weight: 800;
+            color: #6366f1;
+            letter-spacing: 8px;
+            border-radius: 12px;
+            display: inline-block;
+            margin-bottom: 30px;
+        }
+        .footer {
+            background-color: #f8fafc;
+            padding: 20px;
+            text-align: center;
+            font-size: 12px;
+            color: #94a3b8;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>NotesApp Verification</h1>
+        </div>
+        <div class="content">
+            <p>Welcome to NotesApp! Use the code below to verify your email address and complete your registration.</p>
+            <div class="otp-box">{{ otp }}</div>
+            <p>This code will expire in 10 minutes. If you didn't request this, please ignore this email.</p>
+        </div>
+        <div class="footer">
+            &copy; 2026 NotesApp. All rights reserved.
+        </div>
+    </div>
+</body>
+</html>
